@@ -58,14 +58,15 @@ If you wish to use this script in a commercial context or share it publicly, ple
 | `INTUNE_CLIENT_ID`     | Client ID of the App Registration                | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 | `INTUNE_CLIENT_SECRET` | Client Secret of the App Registration            | `~xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
 | `INTUNE_POLICY_ID`     | Object ID of the target iOS Compliance Policy    | `e5d59a1f-d7fd-4fcb-b931-58797ec7bd6b` |
-| `MAIL_SENDER_UPN`      | UPN of the mailbox used to send emails           | `intuneChangeTrack@mo-cloud.de` |
-| `MAIL_RECIPIENT`       | Email address that receives the notification     | `maurice.floethmann@mo-cloud.de` |
+| `MAIL_SENDER_UPN`      | UPN of the mailbox used to send emails           | `mailboxinyourtennant@yourtennant.com` |
+| `MAIL_RECIPIENT`       | Email address that receives the notification     | `yourmailbox@yourmail.com` |
 
 ### 2. Microsoft Graph API Permissions (Application permissions)
 
 - `DeviceManagementManagedDevices.Read.All`
 - `DeviceManagementConfiguration.ReadWrite.All`
 - `Mail.Send`
+- `Device.Read.All`
 
 ### 3. App Registration Setup
 
@@ -91,7 +92,7 @@ If you wish to use this script in a commercial context or share it publicly, ple
 ## Files in this Repository
 
 - `README.md` – This documentation file
-- `Update-iOSCompliancePolicy.ps1` – The main PowerShell Runbook script
+- `Update‑iOSMinimumOSVersion.ps1` – The main PowerShell Runbook script
 
 ## Installation Guide
 
