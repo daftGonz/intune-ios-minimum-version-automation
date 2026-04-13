@@ -142,9 +142,8 @@ This runbook brings automation, safety, and reliability to Intune iOS compliance
 
 ---
 
-**Thank you for using this script.**
-
-Created with care by **Maurice Flöthmann**
+**Thank you for using this script. Created with care (and many late evenings) by Maurice Flöthmann**  
+…while my girlfriend was sleeping, relationship.status = still intact :)
 
 ---
 
