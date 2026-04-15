@@ -5,8 +5,7 @@ An Azure Automation Runbook that automatically updates the `osMinimumVersion` of
 ## Disclaimer
 
 **Note**
-
-This is a fork of the original project with support for using a managed identity associated with the Azure Automation account. All credit is due to Maurice Flöthmann.
+This is a fork of the original project with added support for using a managed identity associated with the Azure Automation account. All credit is due to Maurice Flöthmann.
 
 **Important Notice**  
 This entire script was written **without any AI assistance**. It is 100% hand-crafted, real-world PowerShell code developed and tested by Maurice Flöthmann.  
