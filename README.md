@@ -4,6 +4,10 @@ An Azure Automation Runbook that automatically updates the `osMinimumVersion` of
 
 ## Disclaimer
 
+**Note**
+
+This is a fork of the original project with support for using a managed identity associated with the Azure Automation account. All credit is due to Maurice Flöthmann.
+
 **Important Notice**  
 This entire script was written **without any AI assistance**. It is 100% hand-crafted, real-world PowerShell code developed and tested by Maurice Flöthmann.  
 I place great value on genuine, maintainable, and production-ready code. Every function, logic flow, and error handling mechanism has been carefully designed based on real-world experience with Microsoft Intune and Azure Automation.
@@ -38,6 +42,10 @@ It automatically:
 mo-cloud.de
 
 **Questions or support requests:** [ask@mo-cloud.de](mailto:ask@mo-cloud.de)
+
+## Contributers
+
+**Alex González**
 
 ## License
 
@@ -147,4 +155,4 @@ This runbook brings automation, safety, and reliability to Intune iOS compliance
 
 ---
 
-*Last updated: April 14 2026*
+*Last updated: April 15 2026*
