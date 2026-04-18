@@ -1,0 +1,78 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "automationAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Automation Account"
+            }
+        },
+        "enableSystemIdentity": {
+            "type": "bool",
+            "defaultValue": true,
+            "metadata": {
+                "description": "Enable System Assigned Managed Identity for the Automation Account"
+            }
+        },
+        "runbookName": {
+            "type": "string",
+            "defaultValue": "Update-iOSMinimumOSVersion",
+            "metadata": {
+                "description": "Name of the PowerShell 5.1 runbook to create/publish"
+            }
+        },
+        "runbookDescription": {
+            "type": "string",
+            "defaultValue": "Updates Intune iOS minimum OS version (PowerShell 5.1).",
+            "metadata": {
+                "description": "Description for the runbook"
+            }
+        },
+        "codeLinkUri": {
+            "type": "string",
+            "defaultValue": "https://raw.githubusercontent.com/daftGonz/intune-ios-minimum-version-automation/refs/heads/main/Update%E2%80%91iOSMinimumOSVersion.ps1",
+            "metadata": {
+                "description": "Publish content link (URI) pointing to the runbook source code"
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Automation/automationAccounts",
+            "apiVersion": "2023-11-01",
+            "name": "[parameters('automationAccountName')]",
+            "location": "[resourceGroup().location]",
+            "identity": "[if(parameters('enableSystemIdentity'), json('{\"type\":\"SystemAssigned\"}'), json('null'))]",
+            "sku": {
+                "name": "Basic"
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/runbooks",
+            "apiVersion": "2023-11-01",
+            "name": "[format('{0}/{1}', parameters('automationAccountName'), parameters('runbookName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
+            ],
+            "properties": {
+                "runbookType": "PowerShell",
+                "description": "[parameters('runbookDescription')]",
+                "publishContentLink": {
+                    "uri": "[parameters('codeLinkUri')]",
+                    "version": "[parameters('codeLinkVersion')]"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "automationAccountResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
+        },
+        "runbookResourceId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Automation/automationAccounts/runbooks', parameters('automationAccountName'), parameters('runbookName'))]"
+        }
+    }
+}
