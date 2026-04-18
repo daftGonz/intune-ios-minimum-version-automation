@@ -124,7 +124,7 @@ Write-Log "=== Runbook started ==="
 # Step 1: Configuration
 Write-Log "--- Step 1: Configuration ---"
 $tenantId      = Get-AzVar 'INTUNE_TENANT_ID'
-$envrionmentUrl    = Get-AzVar 'MS_ENV_URL' # Commerical = graph.microsoft.com, GCC High = graph.microsoft.us, DoD = dod-graph.microsoft.us, 21Vianet = microsoftgraph.chinacloudapi.cn
+$environmentUrl    = Get-AzVar 'INTUNE_ENV_URL' # Commerical = graph.microsoft.com, GCC High = graph.microsoft.us, DoD = dod-graph.microsoft.us, 21Vianet = microsoftgraph.chinacloudapi.cn
 #$clientId      = Get-AzVar 'INTUNE_CLIENT_ID'
 #$clientSecret  = Get-AzVar 'INTUNE_CLIENT_SECRET'
 $policyId      = Get-AzVar 'INTUNE_POLICY_ID'
@@ -136,34 +136,30 @@ Write-Log "Policy ID : $policyId"
 # Step 2: OAuth2 Token
 Write-Log "--- Step 2: OAuth2 Token ---"
 
-<#
-$tokenBody = @{ 
-    grant_type    = 'client_credentials'
-    client_id     = $clientId
-    client_secret = $clientSecret
-    scope         = '$environmentUrl/.default'
+
+# Connect to Azure using managed identity.
+Connect-AzAccount -Identity | Out-Null
+
+# Retrieve secure access token
+$secureToken = (Get-AzAccessToken -ResourceUrl $environmentUrl).Token
+
+Write-Log "SECURE TOKEN: $SecureToken"
+
+if ($token) {
+    Write-Log "Token OK"
 }
-$tr = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token" `
-                        -Method POST -Body $tokenBody -ContentType 'application/x-www-form-urlencoded'
-$token = $tr.access_token
 
-#>
-
-# Retrieve authentication token from Graph, convert to secure string.
-Connect-AzAccount -Identity
-$Token = Get-AzAccessToken -ResourceUrl $MS_ENV_URL
-$SecureToken = ($Token.Token | ConvertTo-SecureString -AsPlainText -Force) # Convert plain text token to secure string (required in Graph API v2)
-
-# Connect to Microsoft Graph session using least privilege.
-Connect-MgGraph -AccessToken $SecureToken -NoWelcome
-
-
-Write-Log "Token OK"
+# Build headers and call Graph GCC High
+$headers = @{
+    Authorization = "Bearer $SecureToken"
+    Accept        = "application/json"
+    "Content-Type"  = "application/json"
+}
 
 # Step 3: Fetch iOS devices
 Write-Log "--- Step 3: Fetch iOS devices ---"
-$uriDevices = "$envrionmentUrl/beta/deviceManagement/managedDevices?`$select=id,deviceName,operatingSystem,osVersion&`$top=500"
-$devices = (Invoke-RestMethod -Uri $uriDevices -Method GET -Headers @{Authorization = "Bearer $token"} -ErrorAction Stop).value
+$uriDevices = "$environmentUrl/beta/deviceManagement/managedDevices?`$select=id,deviceName,operatingSystem,osVersion&`$top=500"
+$devices = (Invoke-RestMethod -Uri $uriDevices -Method GET -Headers $headers -ErrorAction Stop).value
 
 $iosDevices = $devices | Where-Object { $_.operatingSystem -and $_.operatingSystem -imatch '^iOS$' }
 Write-Log "iOS devices: $($iosDevices.Count) | Total devices: $($devices.Count)"
@@ -200,7 +196,7 @@ Write-Log "Target minimum version: $targetStr"
 # Step 4: Load policy
 Write-Log "--- Step 4: Load Compliance Policy ---"
 $policyUrl = "$environmentUrl/beta/deviceManagement/deviceCompliancePolicies/$policyId"
-$policy = Invoke-RestMethod -Uri $policyUrl -Method GET -Headers @{Authorization = "Bearer $token"} -ErrorAction Stop
+$policy = Invoke-RestMethod -Uri $policyUrl -Method GET -Headers $headers -ErrorAction Stop
 
 $currentVer = $policy.osMinimumVersion
 $odataType  = $policy.'@odata.type'
@@ -223,11 +219,10 @@ $patchJson = @"
 "@
 
 try {
-    $hdrs = @{ Authorization = "Bearer $token"; 'Content-Type' = 'application/json' }
     Write-Log "PATCH URL : $policyUrl"
     Write-Log "PATCH Body: $patchJson"
     
-    $response = Invoke-WebRequest -Uri $policyUrl -Method PATCH -Headers $hdrs `
+    $response = Invoke-WebRequest -Uri $policyUrl -Method PATCH -Headers $headers `
                                   -Body $patchJson -ContentType 'application/json' -UseBasicParsing -ErrorAction Stop
     Write-Log "PATCH successful - HTTP $($response.StatusCode)"
 } 
@@ -245,7 +240,7 @@ Start-Sleep -Seconds 6
 
 $confirmed = "unknown"
 try {
-    $updated = Invoke-RestMethod -Uri $policyUrl -Method GET -Headers @{Authorization = "Bearer $token"}
+    $updated = Invoke-RestMethod -Uri $policyUrl -Method GET -Headers $headers
     $confirmed = $updated.osMinimumVersion
     Write-Log "Verified minimum version: $confirmed"
 } 
@@ -282,7 +277,7 @@ $mailUrl = "$environmentUrl/v1.0/users/$mailSender/sendMail"
 
 try {
     Invoke-WebRequest -Uri $mailUrl -Method POST `
-                      -Headers @{Authorization = "Bearer $token"; 'Content-Type' = 'application/json'} `
+                      -Headers $headers `
                       -Body $mailJson -ContentType 'application/json' -UseBasicParsing -ErrorAction Stop | Out-Null
     Write-Log "Email sent successfully."
 } 
