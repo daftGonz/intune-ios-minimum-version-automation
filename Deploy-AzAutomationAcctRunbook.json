@@ -81,7 +81,7 @@
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
             ],
             "properties": {
-                "value": "[parameters('INTUNE_ENV_URL')]",
+                "value": "[concat('\"', parameters('INTUNE_ENV_URL'), '\"')]",
                 "isEncrypted": false
             }
         },
@@ -93,7 +93,7 @@
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
             ],
             "properties": {
-                "value": "[string(parameters('INTUNE_POLICY_ID'))]",
+                "value": "[concat('\"', parameters('INTUNE_POLICY_ID'), '\"')]",
                 "isEncrypted": false
             }
         },
@@ -105,7 +105,7 @@
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
             ],
             "properties": {
-                "value": "[string(parameters('MAIL_RECIPIENT'))]",
+                "value": "[concat('\"', parameters('MAIL_RECIPIENT'), '\"')]",
                 "isEncrypted": false
             }
         },
@@ -117,7 +117,7 @@
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
             ],
             "properties": {
-                "value": "[string(parameters('MAIL_SENDER_UPN'))]",
+                "value": "[concat('\"', parameters('MAIL_SENDER_UPN'), '\"')]",
                 "isEncrypted": false
             }
         }
