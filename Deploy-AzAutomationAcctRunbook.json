@@ -3,23 +3,41 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "automationAccountName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the Azure Automation Account"
-            }
+            "type": "string"
         },
         "runbookName": {
-            "type": "string",
-            "defaultValue": "Update-iOSMinimumOSVersion",
-            "metadata": {
-                "description": "Name of the runbook"
-            }
+            "type": "string"
         },
         "runbookScriptUri": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/daftGonz/intune-ios-minimum-version-automation/refs/heads/main/Update%E2%80%91iOSMinimumOSVersion.ps1",
+            "defaultValue": "https://raw.githubusercontent.com/daftGonz/intune-ios-minimum-version-automation/main/Deploy-AzAutomationAcctRunbook.ps1"
+        },
+        "INTUNE_ENV_URL": {
+            "type": "string",
+            "defaultValue": "https://graph.microsoft.com",
             "metadata": {
-                "description": "URI to the PowerShell runbook script"
+                "description": "Commercial = https://graph.microsoft.com, GCC High = https://graph.microsoft.us, DoD = https://dod-graph.microsoft.us, China (21Vianet) = https://microsoftgraph.chinacloudapi.cn"
+            }
+        },
+        "INTUNE_POLICY_ID": {
+            "type": "string",
+            "defaultValue": null,
+            "metadata": {
+                "description": "ID of iOS compliance policy in Intune."
+            }
+        },
+        "MAIL_RECIPIENT": {
+            "type": "string",
+            "defaultValue": null,
+            "metadata": {
+                "description": "Optional: Email address that will receive notifications from the runbook."
+            }
+        },
+        "MAIL_SENDER_UPN": {
+            "type": "string",
+            "defaultValue": null,
+            "metadata": {
+                "description": "Optional: Sender mailbox UPN used for Graph Mail.Send (must have permission)."
             }
         }
     },
@@ -52,19 +70,68 @@
                 "logVerbose": true,
                 "publishContentLink": {
                     "uri": "[parameters('runbookScriptUri')]"
-                },
-                "description": "PowerShell 5.1 runbook deployed via ARM template"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2023-11-01",
+            "name": "[concat(parameters('automationAccountName'), '/INTUNE_ENV_URL')]",
+            "metadata": {
+                "description": "Microsoft Graph endoint URL for authenticating to appropriate cloud instances such as commerical, GCC, GCC High,DoD, and 21Vianet."
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('INTUNE_ENV_URL')]",
+                "isEncrypted": false
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2023-11-01",
+            "name": "[concat(parameters('automationAccountName'), '/INTUNE_POLICY_ID')]",
+            "metadata": {
+                "description": "Object ID of the target iOS Compliance Policy."
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('INTUNE_POLICY_ID')]",
+                "isEncrypted": false
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2023-11-01",
+            "name": "[concat(parameters('automationAccountName'), '/MAIL_RECIPIENT')]",
+            "metadata": {
+                "description": "Email address that receives the notification."
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('MAIL_RECIPIENT')]",
+                "isEncrypted": false
+            }
+        },
+        {
+            "type": "Microsoft.Automation/automationAccounts/variables",
+            "apiVersion": "2023-11-01",
+            "name": "[concat(parameters('automationAccountName'), '/MAIL_SENDER_UPN')]",
+            "metadata": {
+                "description": "UPN of the mailbox used to send emails."
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
+            ],
+            "properties": {
+                "value": "[parameters('MAIL_SENDER_UPN')]",
+                "isEncrypted": false
             }
         }
-    ],
-    "outputs": {
-        "automationAccountResourceId": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
-        },
-        "runbookResourceId": {
-            "type": "string",
-            "value": "[resourceId('Microsoft.Automation/automationAccounts/runbooks', parameters('automationAccountName'), parameters('runbookName'))]"
-        }
-    }
+    ]
 }
