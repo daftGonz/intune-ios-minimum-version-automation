@@ -21,21 +21,21 @@
         },
         "INTUNE_POLICY_ID": {
             "type": "string",
-            "defaultValue": null,
+            "defaultValue": "",
             "metadata": {
                 "description": "ID of iOS compliance policy in Intune."
             }
         },
         "MAIL_RECIPIENT": {
             "type": "string",
-            "defaultValue": null,
+            "defaultValue": "",
             "metadata": {
                 "description": "Optional: Email address that will receive notifications from the runbook."
             }
         },
         "MAIL_SENDER_UPN": {
             "type": "string",
-            "defaultValue": null,
+            "defaultValue": "",
             "metadata": {
                 "description": "Optional: Sender mailbox UPN used for Graph Mail.Send (must have permission)."
             }
@@ -77,9 +77,6 @@
             "type": "Microsoft.Automation/automationAccounts/variables",
             "apiVersion": "2023-11-01",
             "name": "[concat(parameters('automationAccountName'), '/INTUNE_ENV_URL')]",
-            "metadata": {
-                "description": "Microsoft Graph endoint URL for authenticating to appropriate cloud instances such as commerical, GCC, GCC High,DoD, and 21Vianet."
-            },
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
             ],
@@ -92,9 +89,6 @@
             "type": "Microsoft.Automation/automationAccounts/variables",
             "apiVersion": "2023-11-01",
             "name": "[concat(parameters('automationAccountName'), '/INTUNE_POLICY_ID')]",
-            "metadata": {
-                "description": "Object ID of the target iOS Compliance Policy."
-            },
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
             ],
@@ -107,9 +101,6 @@
             "type": "Microsoft.Automation/automationAccounts/variables",
             "apiVersion": "2023-11-01",
             "name": "[concat(parameters('automationAccountName'), '/MAIL_RECIPIENT')]",
-            "metadata": {
-                "description": "Email address that receives the notification."
-            },
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
             ],
@@ -122,9 +113,6 @@
             "type": "Microsoft.Automation/automationAccounts/variables",
             "apiVersion": "2023-11-01",
             "name": "[concat(parameters('automationAccountName'), '/MAIL_SENDER_UPN')]",
-            "metadata": {
-                "description": "UPN of the mailbox used to send emails."
-            },
             "dependsOn": [
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
             ],
