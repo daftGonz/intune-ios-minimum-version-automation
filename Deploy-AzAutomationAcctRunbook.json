@@ -81,7 +81,7 @@
                 "[resourceId('Microsoft.Automation/automationAccounts', parameters('automationAccountName'))]"
             ],
             "properties": {
-                "value": "[json(concat('\"', parameters('INTUNE_ENV_URL'), '\"'))]"
+                "value": "[json(concat('\"', parameters('INTUNE_ENV_URL'), '\"'))]",
                 "isEncrypted": false
             }
         },
