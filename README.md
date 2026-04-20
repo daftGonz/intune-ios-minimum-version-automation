@@ -66,6 +66,7 @@ If you wish to use this script in a commercial context or share it publicly, ple
 | `MAIL_SENDER_UPN`      | UPN of the mailbox used to send emails           | `mailboxinyourtennant@yourtennant.com` |
 | `MAIL_RECIPIENT`       | Email address that receives the notification     | `yourmailbox@yourmail.com` |
 
+
 ### 2. Microsoft Graph API Permissions (Application permissions)
 
 - `DeviceManagementManagedDevices.Read.All`
@@ -94,11 +95,11 @@ If you wish to use this script in a commercial context or share it publicly, ple
 - `Deploy-AzAutomationAcctRunbook.json` - One-click deployment ARM template for runbook
 - `Assign-MSGraphPermissions.ps1` - Script for assigning permission to managed identity
 
-## Installation Guide
+## 🚀 Instructions
 
-1. Deploy Azure automation account and associated resources using one-click deployment
-2. Enter deployment field values to deploy resources
-3. Assign permissions using the `Assign-MSGraphPermissions.ps1` script using the Microsoft Graph PowerShell module
+1. Deploy Azure automation account and associated resources using one-click deployment: [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FdaftGonz%2Fintune-ios-minimum-version-automation%2Fmain%2FDeploy-AzAutomationAcctRunbook.json)
+3. Enter deployment field values to deploy resources
+4. Assign permissions using the `Assign-MSGraphPermissions.ps1` script using the Microsoft Graph PowerShell module
 5. (Recommended) Create a schedule (e.g. once per day or once per week)
 
 ## Example Email Notification
