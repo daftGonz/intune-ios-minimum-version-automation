@@ -10,7 +10,7 @@
         },
         "runbookScriptUri": {
             "type": "string",
-            "defaultValue": "https://raw.githubusercontent.com/daftGonz/intune-ios-minimum-version-automation/refs/heads/main/Update%E2%80%91iOSMinimumOSVersion.ps1"
+            "defaultValue": "https://raw.githubusercontent.com/daftGonz/intune-ios-minimum-version-automation/refs/heads/main/Update-iOSMinimumOSVersion.ps1"
         },
         "INTUNE_ENV_URL": {
             "type": "string",
