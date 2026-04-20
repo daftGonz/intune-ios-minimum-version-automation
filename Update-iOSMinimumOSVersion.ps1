@@ -8,6 +8,9 @@
 .AUTHOR
     Maurice Flöthmann
 
+.CONTRIBUTERS
+    Alex Gonzalez - Modified for use with Azure managed identity.
+
 .COPYRIGHT
     © 2026 Maurice Flöthmann (mo-cloud.de)
 
@@ -123,10 +126,7 @@ Write-Log "=== Runbook started ==="
 
 # Step 1: Configuration
 Write-Log "--- Step 1: Configuration ---"
-$tenantId      = Get-AzVar 'INTUNE_TENANT_ID'
 $environmentUrl    = Get-AzVar 'INTUNE_ENV_URL' # Commerical = graph.microsoft.com, GCC High = graph.microsoft.us, DoD = dod-graph.microsoft.us, 21Vianet = microsoftgraph.chinacloudapi.cn
-#$clientId      = Get-AzVar 'INTUNE_CLIENT_ID'
-#$clientSecret  = Get-AzVar 'INTUNE_CLIENT_SECRET'
 $policyId      = Get-AzVar 'INTUNE_POLICY_ID'
 $mailSender    = Get-AzVar 'MAIL_SENDER_UPN'
 $mailRecipient = Get-AzVar 'MAIL_RECIPIENT'
@@ -143,13 +143,11 @@ Connect-AzAccount -Identity | Out-Null
 # Retrieve secure access token
 $secureToken = (Get-AzAccessToken -ResourceUrl $environmentUrl).Token
 
-Write-Log "SECURE TOKEN: $SecureToken"
-
 if ($token) {
     Write-Log "Token OK"
 }
 
-# Build headers and call Graph GCC High
+# Build headers
 $headers = @{
     Authorization = "Bearer $SecureToken"
     Accept        = "application/json"
