@@ -61,9 +61,7 @@ If you wish to use this script in a commercial context or share it publicly, ple
 
 | Variable Name          | Description                                      | Example |
 |------------------------|--------------------------------------------------|---------|
-| `INTUNE_TENANT_ID`     | Azure AD Tenant ID                               | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
-| `INTUNE_CLIENT_ID`     | Client ID of the App Registration                | `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
-| `INTUNE_CLIENT_SECRET` | Client Secret of the App Registration            | `~xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
+| `INTUNE_ENV_URL`       | URL of Microsoft graph endpoint (e.g., commercial, GCC High, DoD, 21Vianet)                   | `https://graph.microsoft.com` |
 | `INTUNE_POLICY_ID`     | Object ID of the target iOS Compliance Policy    | `e5d59a1f-d7fd-4fcb-b931-58797ec7bd6b` |
 | `MAIL_SENDER_UPN`      | UPN of the mailbox used to send emails           | `mailboxinyourtennant@yourtennant.com` |
 | `MAIL_RECIPIENT`       | Email address that receives the notification     | `yourmailbox@yourmail.com` |
@@ -75,17 +73,10 @@ If you wish to use this script in a commercial context or share it publicly, ple
 - `Mail.Send`
 - `Device.Read.All`
 
-### 3. App Registration Setup
-
-- Create an App Registration in Azure AD
-- Grant the above API permissions (admin consent required)
-- Create a client secret
-- Store the values in the Automation Variables
-
 ## How It Works (Detailed Flow)
 
 1. **Configuration** – Loads all required variables from Azure Automation
-2. **Authentication** – Acquires an OAuth2 access token using client credentials flow
+2. **Authentication** – Acquires an OAuth2 access token using managed identity
 3. **Device Inventory** – Queries all managed devices and filters for iOS devices
 4. **Version Analysis** – Parses `osVersion` and determines unique versions
 5. **Target Version Calculation**:
@@ -100,13 +91,14 @@ If you wish to use this script in a commercial context or share it publicly, ple
 
 - `README.md` – This documentation file
 - `Update‑iOSMinimumOSVersion.ps1` – The main PowerShell Runbook script
+- `Deploy-AzAutomationAcctRunbook.json` - One-click deployment ARM template for runbook
+- `Assign-MSGraphPermissions.ps1` - Script for assigning permission to managed identity
 
 ## Installation Guide
 
-1. Create a new **PowerShell 5.1** Runbook in Azure Automation
-2. Copy the entire content of `Update-iOSCompliancePolicy.ps1` into the runbook
-3. Create all six Automation Variables listed above
-4. Save and **Publish** the runbook
+1. Deploy Azure automation account and associated resources using one-click deployment
+2. Enter deployment field values to deploy resources
+3. Assign permissions using the `Assign-MSGraphPermissions.ps1` script using the Microsoft Graph PowerShell module
 5. (Recommended) Create a schedule (e.g. once per day or once per week)
 
 ## Example Email Notification
