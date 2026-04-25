@@ -45,6 +45,9 @@ mo-cloud.de
 ## Contributers
 
 **Alex González**
+[alex-r-gonzalez.me](https://alex-r-gonzalez.me/)
+
+**Questions or support requests:** [alex-r-gonzalez.casing943@simplelogin.com](mailto:alex-r-gonzalez.casing943@simplelogin.com)
 
 ## License
 
@@ -93,14 +96,14 @@ If you wish to use this script in a commercial context or share it publicly, ple
 - `README.md` – This documentation file
 - `Update‑iOSMinimumOSVersion.ps1` – The main PowerShell Runbook script
 - `Deploy-AzAutomationAcctRunbook.json` - One-click deployment ARM template for runbook
-- `Assign-MSGraphPermissions.ps1` - Script for assigning permission to managed identity
+- `Assign-GraphApiPermissions.ps1` - Script for assigning permission to managed identity
 
 ## 🚀 Instructions
 
 1. Deploy Azure automation account and associated resources using one-click deployment: [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FdaftGonz%2Fintune-ios-minimum-version-automation%2Fmain%2FDeploy-AzAutomationAcctRunbook.json)
-3. Enter deployment field values to deploy resources
-4. Assign permissions using the `Assign-MSGraphPermissions.ps1` script using the Microsoft Graph PowerShell module
-5. (Recommended) Create a schedule (e.g. once per day or once per week)
+3. Populate values in deployment template fields
+4. Once resources have been deployed, assign permissions using the `Assign-GraphApiPermissions.ps1` script using the Microsoft Graph PowerShell module
+5. (Recommended) Create a schedule (e.g. once per day or once per week) on the runbook resource
 
 ## Example Email Notification
 
@@ -142,9 +145,4 @@ This runbook brings automation, safety, and reliability to Intune iOS compliance
 
 ---
 
-**Thank you for using this script. Created with care (and many late evenings) by Maurice Flöthmann**  
-…while my girlfriend was sleeping, relationship.status = still intact :)
-
----
-
-*Last updated: April 15 2026*
+*Last updated: April 25 2026*
