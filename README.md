@@ -102,7 +102,7 @@ If you wish to use this script in a commercial context or share it publicly, ple
 
 1. Deploy Azure automation account and associated resources using one-click deployment: [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FdaftGonz%2Fintune-ios-minimum-version-automation%2Fmain%2FDeploy-AzAutomationAcctRunbook.json)
 3. Populate values in deployment template fields
-4. Once resources have been deployed, assign permissions using the `Assign-GraphApiPermissions.ps1` script using the Microsoft Graph PowerShell module
+4. Once resources have been deployed, assign permissions to Automation Account Managed Identity using the `Assign-GraphApiPermissions.ps1` script in PowerShell (Azure Cloud Shell or PowerShell 5.1+)
 5. (Recommended) Create a schedule (e.g. once per day or once per week) on the runbook resource
 
 ## Example Email Notification
