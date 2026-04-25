@@ -45,7 +45,7 @@ mo-cloud.de
 ## Contributers
 
 **Alex González**
-[alex-r-gonzalez.me](https://alex-r-gonzalez.me/)
+ <br> [alex-r-gonzalez.me](https://alex-r-gonzalez.me/)
 
 **Questions or support requests:** [alex-r-gonzalez.casing943@simplelogin.com](mailto:alex-r-gonzalez.casing943@simplelogin.com)
 
